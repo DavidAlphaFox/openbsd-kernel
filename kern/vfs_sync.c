@@ -132,6 +132,7 @@ vn_syncer_add_to_worklist(struct vnode *vp, int delay)
 /*
  * System filesystem synchronizer daemon.
  */
+// 请求文件系统同步
 void
 sched_sync(struct proc *p)
 {

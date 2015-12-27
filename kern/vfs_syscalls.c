@@ -830,11 +830,12 @@ sys_openat(struct proc *p, void *v, register_t *retval)
 	return (doopenat(p, SCARG(uap, fd), SCARG(uap, path),
 	    SCARG(uap, flags), SCARG(uap, mode), retval));
 }
-
+// 打开文件
 int
 doopenat(struct proc *p, int fd, const char *path, int oflags, mode_t mode,
     register_t *retval)
 {
+	// 进程文件句柄列表
 	struct filedesc *fdp = p->p_fd;
 	struct file *fp;
 	struct vnode *vp;
@@ -852,9 +853,9 @@ doopenat(struct proc *p, int fd, const char *path, int oflags, mode_t mode,
 	}
 	if (oflags & O_CREAT)
 		p->p_tamenote |= TMN_CREAT;
-
+    // 锁住句柄表
 	fdplock(fdp);
-
+	// 分配file结构
 	if ((error = falloc(p, &fp, &indx)) != 0)
 		goto out;
 	flags = FFLAGS(oflags);
@@ -887,6 +888,7 @@ doopenat(struct proc *p, int fd, const char *path, int oflags, mode_t mode,
 	vp = nd.ni_vp;
 	fp->f_flag = flags & FMASK;
 	fp->f_type = DTYPE_VNODE;
+	// file中的所有操作，指向实际文件系统的操作函数
 	fp->f_ops = &vnops;
 	fp->f_data = vp;
 	if (flags & (O_EXLOCK | O_SHLOCK)) {

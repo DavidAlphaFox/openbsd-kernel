@@ -281,6 +281,7 @@ ffs_read(void *v)
 /*
  * Vnode op for writing.
  */
+// ffs文件系统的写入操作
 int
 ffs_write(void *v)
 {

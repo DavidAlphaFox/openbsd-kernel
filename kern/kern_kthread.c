@@ -53,6 +53,7 @@ int	kthread_create_now;
  * Fork a kernel thread.  Any process can request this to be done.
  * The VM space and limits, etc. will be shared with proc0.
  */
+//创建内核线程
 int
 kthread_create(void (*func)(void *), void *arg,
     struct proc **newpp, const char *name)
@@ -65,6 +66,7 @@ kthread_create(void (*func)(void *), void *arg,
 	 * descriptors and don't leave the exit status around for the
 	 * parent to wait for.
 	 */
+	// 创建一个进程，内核线程要依附一个进程上面
 	error = fork1(&proc0, FORK_SHAREVM|FORK_SHAREFILES|FORK_NOZOMBIE|
 	    FORK_SYSTEM|FORK_SIGHAND, NULL, 0, func, arg, NULL, &p);
 	if (error)

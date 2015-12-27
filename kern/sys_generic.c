@@ -227,6 +227,7 @@ dofilereadv(struct proc *p, int fd, struct file *fp, const struct iovec *iovp,
 /*
  * Write system call
  */
+// 系统的写操作调用
 int
 sys_write(struct proc *p, void *v, register_t *retval)
 {
@@ -242,10 +243,10 @@ sys_write(struct proc *p, void *v, register_t *retval)
 
 	if ((fp = fd_getfile_mode(fdp, fd, FWRITE)) == NULL)
 		return (EBADF);
-
+	// 生成写向量数组
 	iov.iov_base = (void *)SCARG(uap, buf);
 	iov.iov_len = SCARG(uap, nbyte);
-
+	
 	FREF(fp);
 
 	/* dofilewritev() will FRELE the descriptor for us */
@@ -351,6 +352,7 @@ dofilewritev(struct proc *p, int fd, struct file *fp, const struct iovec *iovp,
 	}
 #endif
 	cnt = auio.uio_resid;
+	// 此处执行写入操作
 	error = (*fp->f_ops->fo_write)(fp, offset, &auio, fp->f_cred);
 	if (error) {
 		if (auio.uio_resid != cnt && (error == ERESTART ||

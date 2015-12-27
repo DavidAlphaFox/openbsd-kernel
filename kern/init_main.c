@@ -183,6 +183,8 @@ struct emul emul_native = {
  * startup(), which does memory initialization and autoconfiguration.
  */
 /* XXX return int, so gcc -Werror won't complain */
+// 操作系统从此处开始启动
+// 创建进程0，加载文件系统，并且创建进程1
 int
 main(void *framep)
 {
@@ -258,6 +260,7 @@ main(void *framep)
 	/*
 	 * Initialize kqueues.
 	 */
+	// 此处开始创建了kqueue
 	kqueue_init();
 
 	/* Create credentials. */
@@ -421,6 +424,7 @@ main(void *framep)
 	init_exec();
 
 	/* Start the scheduler */
+	// 初始化调度器
 	scheduler_start();
 
 	/*
@@ -434,7 +438,7 @@ main(void *framep)
 	 */
 	{
 		struct proc *initproc;
-
+// 创建进程1，init进程
 		if (fork1(p, FORK_FORK, NULL, 0, start_init, NULL, NULL,
 		    &initproc))
 			panic("fork init");
@@ -505,9 +509,9 @@ main(void *framep)
 			timespecclear(&p->p_rtime);
 		}
 	}
-
+// 初始化swap分区
 	uvm_swap_init();
-
+// 创建换入换出线程
 	/* Create the pageout daemon kernel thread. */
 	if (kthread_create(uvm_pageout, NULL, NULL, "pagedaemon"))
 		panic("fork pagedaemon");

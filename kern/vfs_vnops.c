@@ -349,6 +349,7 @@ vn_read(struct file *fp, off_t *poff, struct uio *uio, struct ucred *cred)
 /*
  * File table vnode write routine.
  */
+// vnode的写入函数
 int
 vn_write(struct file *fp, off_t *poff, struct uio *uio, struct ucred *cred)
 {

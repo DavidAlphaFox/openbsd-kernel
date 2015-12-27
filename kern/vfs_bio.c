@@ -542,6 +542,7 @@ out:
 /*
  * Block write.  Described in Bach (p.56)
  */
+// 区块写入
 int
 bwrite(struct buf *bp)
 {
@@ -563,6 +564,8 @@ bwrite(struct buf *bp)
 	 * to async, not sync writes (which is safe, but ugly).
 	 */
 	async = ISSET(bp->b_flags, B_ASYNC);
+	// 如果文件系统是ASYNC的写入，这个操作是非async的
+	// 将操作转化成async的操作
 	if (!async && mp && ISSET(mp->mnt_flag, MNT_ASYNC)) {
 		bdwrite(bp);
 		return (0);
@@ -620,6 +623,7 @@ bwrite(struct buf *bp)
 	/*
 	 * If I/O was synchronous, wait for it to complete.
 	 */
+	//同步操作，需要等待操作结束
 	rv = biowait(bp);
 
 	/* Release the buffer. */
@@ -1109,7 +1113,7 @@ biowait(struct buf *bp)
 	int s;
 
 	KASSERT(!(bp->b_flags & B_ASYNC));
-
+	//循环检查是否设置完成的标志
 	s = splbio();
 	while (!ISSET(bp->b_flags, B_DONE))
 		tsleep(bp, PRIBIO + 1, "biowait", 0);

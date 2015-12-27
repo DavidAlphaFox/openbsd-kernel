@@ -177,7 +177,7 @@ fd_unused(struct filedesc *fdp, int fd)
 		fdp->fd_lastfile = find_last_set(fdp, fd);
 	fdp->fd_openfd--;
 }
-
+// 从句柄数组中找到struct file的结构体
 struct file *
 fd_getfile(struct filedesc *fdp, int fd)
 {

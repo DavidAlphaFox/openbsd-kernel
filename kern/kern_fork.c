@@ -245,7 +245,7 @@ process_new(struct proc *p, struct process *parent, int flags)
 
 /* print the 'table full' message once per 10 seconds */
 struct timeval fork_tfmrate = { 10, 0 };
-
+// 创建一个新的进程，并将传入的函数作为执行的开始点
 int
 fork1(struct proc *curp, int flags, void *stack, pid_t *tidptr,
     void (*func)(void *), void *arg, register_t *retval,

@@ -261,6 +261,7 @@ sleep_finish(struct sleep_state *sls, int do_sleep)
 		p->p_stat = SSLEEP;
 		p->p_ru.ru_nvcsw++;
 		SCHED_ASSERT_LOCKED();
+		// 此处进行了线程切换
 		mi_switch();
 	} else if (!do_sleep) {
 		unsleep(p);

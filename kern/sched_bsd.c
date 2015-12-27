@@ -409,11 +409,12 @@ mi_switch(void)
 	 * scheduling flags.
 	 */
 	atomic_clearbits_int(&spc->spc_schedflags, SPCF_SWITCHCLEAR);
-
+	//获得下一个进程
 	nextproc = sched_chooseproc();
 
 	if (p != nextproc) {
 		uvmexp.swtch++;
+		//cpu进行切换
 		cpu_switchto(p, nextproc);
 	} else {
 		p->p_stat = SONPROC;
