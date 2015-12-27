@@ -262,7 +262,7 @@ struct process {
      "\017NOZOMBIE" "\020STOPPED" "\021SYSTEM" "\022EMBRYO" "\023ZOMBIE" \
      "\024NOBROADCASTKILL" "\025TAMED")
 
-
+// 定义proc
 struct proc {
 	TAILQ_ENTRY(proc) p_runq;
 	LIST_ENTRY(proc) p_list;	/* List of all threads. */
