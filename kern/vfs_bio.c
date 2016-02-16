@@ -683,6 +683,7 @@ bdwrite(struct buf *bp)
 /*
  * Asynchronous block write; just an asynchronous bwrite().
  */
+// 异步执行block写入
 void
 bawrite(struct buf *bp)
 {
