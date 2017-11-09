@@ -61,7 +61,7 @@ vfs_getcwd_scandir(struct vnode **lvpp, struct vnode **uvpp, char **bpp,
 	ino_t fileno;
 	struct vattr va;
 	struct vnode *uvp = NULL;
-	struct vnode *lvp = *lvpp;	
+	struct vnode *lvp = *lvpp;
 	struct componentname cn;
 
 	tries = 0;
@@ -152,7 +152,7 @@ vfs_getcwd_scandir(struct vnode **lvpp, struct vnode **uvpp, char **bpp,
 		cpos = dirbuf;
 		tries = 0;
 
-		/* Scan directory page looking for matching vnode */ 
+		/* Scan directory page looking for matching vnode */
 		for (len = (dirbuflen - uio.uio_resid); len > 0;
 		     len -= reclen) {
 			dp = (struct dirent *)cpos;
@@ -245,7 +245,7 @@ vfs_getcwd_getcache(struct vnode **lvpp, struct vnode **uvpp, char **bpp,
 			vput(uvp);
 
 		*uvpp = NULL;
-		
+
 		error = vn_lock(lvp, LK_EXCLUSIVE | LK_RETRY, p);
 		if (!error) {
 			*bpp = obp; /* restore the buffer */
@@ -264,6 +264,7 @@ int
 vfs_getcwd_common(struct vnode *lvp, struct vnode *rvp, char **bpp, char *bufp,
     int limit, int flags, struct proc *p)
 {
+  // 直接从进程的p_fd来取，而不是PWD这个变量
 	struct filedesc *fdp = p->p_fd;
 	struct vnode *uvp = NULL;
 	char *bp = NULL;
@@ -318,7 +319,7 @@ vfs_getcwd_common(struct vnode *lvp, struct vnode *rvp, char **bpp, char *bufp,
 
 			if (lvp == rvp)
 				goto out;
-			
+
 			tvp = lvp;
 			lvp = lvp->v_mount->mnt_vnodecovered;
 
@@ -365,7 +366,7 @@ vfs_getcwd_common(struct vnode *lvp, struct vnode *rvp, char **bpp, char *bufp,
 		uvp = NULL;
 		limit--;
 
-	} while ((lvp != rvp) && (limit > 0)); 
+	} while ((lvp != rvp) && (limit > 0));
 
 out:
 
@@ -385,7 +386,7 @@ out:
 
 /* Find pathname of a process's current directory */
 int
-sys___getcwd(struct proc *p, void *v, register_t *retval) 
+sys___getcwd(struct proc *p, void *v, register_t *retval)
 {
 	struct sys___getcwd_args *uap = v;
 	int error, lenused, len = SCARG(uap, len);
